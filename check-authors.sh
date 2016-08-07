@@ -38,7 +38,7 @@ for entry in $(git log ${ROOT_COMMIT}.. --format="%H:%cE" --reverse); do
   IFS=':' read -ra atoms <<< "${entry}"
   commit=${atoms[0]}
   committer=${atoms[1]}
-  if [ -z "${KNOWN_authors[${committer}]}" ]; then
+  if [ -z "${KNOWN_AUTHORS[${committer}]}" ]; then
     echo "Commit ${commit} has an unknown committer '${committer}'."
     failures=1
   fi
