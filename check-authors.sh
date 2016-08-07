@@ -30,3 +30,23 @@ else
   exit 1
 fi
 
+# Check that all committers are present in the authors file.
+echo "Checking whether all commit committers are known..."
+
+failures=0
+for entry in $(git log ${ROOT_COMMIT}.. --format="%H:%cE" --reverse); do
+  IFS=':' read -ra atoms <<< "${entry}"
+  commit=${atoms[0]}
+  committer=${atoms[1]}
+  if [ -z "${KNOWN_authors[${committer}]}" ]; then
+    echo "Commit ${commit} has an unknown committer '${committer}'."
+    failures=1
+  fi
+done
+
+if [ "${failures}" == "0" ]; then
+  echo "All commit committers verified."
+else
+  echo "Unknown committers found."
+  exit 1
+fi
