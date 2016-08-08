@@ -33,6 +33,10 @@ fi
 # Check that all committers are present in the authors file.
 echo "Checking whether all commit committers are known..."
 
+# Special case for GitHub committer. GitHub
+# uses it when interacting through the web interface.
+KNOWN_AUTHORS["noreply@github.com"]="ok"
+
 failures=0
 for entry in $(git log ${ROOT_COMMIT}.. --format="%H:%cE" --reverse); do
   IFS=':' read -ra atoms <<< "${entry}"
